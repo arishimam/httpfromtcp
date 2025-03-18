@@ -21,20 +21,21 @@ func main() {
 		}
 
 		for i := range data {
-
 			if data[i] == '\n' {
 				// split
+				currentLine += string(data[:i])
 				fmt.Printf("read: %s\n", currentLine)
 				currentLine = ""
-				continue
-
+				if i+1 < len(data) {
+					data = data[i+1:]
+				} else {
+					data = []byte{}
+				}
+				break
 			}
-			currentLine += string(data[i])
-		}
-	}
 
-	if currentLine != "" {
-		fmt.Printf("read: %s\n", currentLine)
+		}
+		currentLine += string(data)
 	}
 
 }
