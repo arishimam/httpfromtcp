@@ -20,32 +20,32 @@ func main() {
 	fmt.Printf("Reading data from %s\n", inputFilePath)
 	fmt.Println("================================")
 
-	ch := getLinesChannel(f)
+	linesChan := getLinesChannel(f)
 
-	for l := range ch {
-		fmt.Printf("read: %s\n", l)
+	for line := range linesChan {
+		fmt.Printf("read: %s\n", line)
 	}
 
 }
 
 func getLinesChannel(f io.ReadCloser) <-chan string {
-	currentLine := ""
 
 	ch := make(chan string)
 
 	go func() {
+		defer close(ch)
+		defer f.Close()
+
+		currentLine := ""
 		for {
 			buffer := make([]byte, 8, 8)
 			n, err := f.Read(buffer)
 			if err != nil {
 				if currentLine != "" {
-					fmt.Printf("read: %s\n", currentLine)
 					ch <- currentLine
-
 				}
 
 				if errors.Is(err, io.EOF) {
-					close(ch)
 					break
 				}
 
@@ -53,7 +53,8 @@ func getLinesChannel(f io.ReadCloser) <-chan string {
 				break
 			}
 
-			parts := strings.Split(string(buffer[:n]), "\n")
+			str := string(buffer[:n])
+			parts := strings.Split(str, "\n")
 
 			for i := 0; i < len(parts)-1; i++ {
 				currentLine += parts[i]
