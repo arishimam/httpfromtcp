@@ -24,18 +24,15 @@ func main() {
 	listener, err := net.Listen("tcp", portNumber)
 	if err != nil {
 		log.Fatalf("Error listening: %v", err)
-		return
 	}
 	defer listener.Close()
 
-	fmt.Println("Waiting for connection to be accepted")
+	fmt.Println("Listening for tcp traffic on port ", portNumber)
 
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
 			log.Fatalf("Error accepting connection: %v", err)
-			return
-
 		}
 
 		fmt.Println("Connection has been accepted")
@@ -75,7 +72,7 @@ func getLinesChannel(f io.ReadCloser) <-chan string {
 				}
 
 				fmt.Printf("Error reading the file: %v", err)
-				break
+				return
 			}
 
 			str := string(buffer[:n])
