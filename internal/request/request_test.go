@@ -11,9 +11,8 @@ import (
 func TestRequestLineParse(t *testing.T) {
 	// Test: Good GET Request line
 	reader := &chunkReader{
-		data:"GET / HTTP/1.1\r\nHost: localhost:42069\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n"
+		data:            "GET / HTTP/1.1\r\nHost: localhost:42069\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n",
 		numBytesPerRead: 3,
-
 	}
 
 	r, err := RequestFromReader(reader)
@@ -25,7 +24,7 @@ func TestRequestLineParse(t *testing.T) {
 
 	// Test: Good GET Request line with path
 	reader = &chunkReader{
-		data: "GET /coffee HTTP/1.1\r\nHost: localhost:42069\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n"
+		data:            "GET /coffee HTTP/1.1\r\nHost: localhost:42069\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n",
 		numBytesPerRead: 1,
 	}
 	r, err = RequestFromReader(reader)
@@ -37,7 +36,7 @@ func TestRequestLineParse(t *testing.T) {
 
 	// Test: Good POST Request with path
 	reader = &chunkReader{
-		data: "POST /coffee HTTP/1.1\r\nHost: localhost:42069\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n"
+		data:            "POST /coffee HTTP/1.1\r\nHost: localhost:42069\r\nUser-Agent: curl/7.81.0\r\nAccept: */*\r\n\r\n",
 		numBytesPerRead: len(reader.data),
 	}
 	r, err = RequestFromReader(reader)
