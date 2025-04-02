@@ -9,6 +9,7 @@ import (
 
 type Request struct {
 	RequestLine RequestLine
+	state       int
 }
 
 type RequestLine struct {
