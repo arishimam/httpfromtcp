@@ -20,6 +20,18 @@ type RequestLine struct {
 
 const crlf = "\r\n"
 
+func (r *Request) parse(data []byte) (int, error) {
+	if r.state == 1 {
+		return -1, fmt.Errorf("error: trying to read data while in a done state")
+	}
+
+	if r.state == 0 {
+
+	}
+
+	return -1, fmt.Errorf("error: unknown state")
+}
+
 func RequestFromReader(reader io.Reader) (*Request, error) {
 	rawBytes, err := io.ReadAll(reader)
 	if err != nil {
